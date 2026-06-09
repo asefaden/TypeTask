@@ -52,24 +52,26 @@ const getAuthHeader = () => {
   }, [isLoggedIn]);
 
   // =============== AUTH HANDLERS ===============
-  const handleAuthSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setAuthError("");
-    try {
-      if (authView === "register") {
-        await axios.post(`${API_URL}/auth/register`, { username, email, password });
-        alert("ምዝገባው ተሳክቷል! አሁን መግባት ይችላሉ።");
-        setAuthView("login");
-        setPassword("");
-      } else {
-        const response = await axios.post(`${API_URL}/auth/login`, { email, password });
-        localStorage.setItem("token", response.data.token);
-        setIsLoggedIn(true);
-      }
-    } catch (error: any) {
-      setAuthError(error.response?.data?.error || "የሆነ ስህተት ተፈጥሯል");
+const handleAuthSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setAuthError("");
+  try {
+    if (authView === "register") {
+      // 🔑 እዚህ ጋር የኢንቨርትድ ኮማ (Backtick) አጠቃቀም እና ${API_URL} በትክክል መጻፉን ያረጋግጡ
+      await axios.post(`${API_URL}/auth/register`, { username, email, password });
+      alert("ምዝገባው ተሳክቷል! አሁን መግባት ይችላሉ።");
+      setAuthView("login");
+      setPassword("");
+    } else {
+      // 🔑 እዚህም በተመሳሳይ መልኩ ይተኩት
+      const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+      localStorage.setItem("token", response.data.token);
+      setIsLoggedIn(true);
     }
-  };
+  } catch (error: any) {
+    setAuthError(error.response?.data?.error || "የሆነ ስህተት ተፈጥሯል");
+  }
+};
 
   const handleLogout = () => {
     localStorage.removeItem("token");
