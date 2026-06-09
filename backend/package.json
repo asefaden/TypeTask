@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-  "build": "tsc",
+     "dev": "tsx watch src/server.ts",
+  "build": "npx tsc",
   "start": "node dist/server.js"
   },
   "dependencies": {
