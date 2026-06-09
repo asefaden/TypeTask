@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -27,7 +26,19 @@ export default function Home() {
   const [filter, setFilter] = useState<"all" | "pending" | "in_progress" | "completed">("all");
   const [loading, setLoading] = useState(true);
 
-  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  // 🔗 የኢንቫይሮመንት ፋይል ሳይጠይቅ በራሱ አድራሻውን የሚያሰላ ብልጥ መንገድ
+const getApiUrl = () => {
+  if (typeof window !== "undefined") {
+    // መተግበሪያው ክላውድ (aletcloud) ላይ እየሰራ ከሆነ ራሱ 'https://aletcloud.com' ያደርገዋል
+    if (window.location.hostname !== "localhost") {
+      return `${window.location.origin}/api`;
+    }
+  }
+  // በእርስዎ ኮምፒውተር (Locally) ሲሞክሩት ደግሞ ወደ localhost ይመለሳል
+  return "http://localhost:5000/api";
+};
+
+const API_URL = getApiUrl();
 
   // በየጊዜው Token መኖሩን መፈተሻ (Axios Config Helper)
  // 🔑 የJWT ቶከን ፎርማትን በትክክል ማስተካከያ
